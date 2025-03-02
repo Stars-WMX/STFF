@@ -1,0 +1,66 @@
+dataset:
+  train:  # LMDB
+    type: MFQEV2_TrainDataset
+
+    # for lmdb
+    root: /tdx/WMX/data/MFQEV2/train_108
+    gt_folder: raw/
+    lq_folder: HM16.5_LDP/QP37/
+
+    # for dataset
+    gt_path: /tdx/WMX/data/MFQEV2/train_108/mfqev2_train_gt_qp37_15.lmdb
+    lq_path: /tdx/WMX/data/MFQEV2/train_108/mfqev2_train_lq_qp37_15.lmdb
+
+    meta_info_fp: meta_info.txt
+
+    gt_size: 64 # ground truth patch size: gt_size * gt_size
+    use_flip: True
+    use_rot: True  # rotation per 90 degrees
+    random_reverse: False
+
+    # for datasampler
+    enlarge_ratio: 300  # enlarge dataset by randomly cropping.
+
+    # for dataloader   Defined in utils/deep_learning.py
+    num_worker_per_gpu: 8  # 12 in total. mainly affect IO
+    batch_size_per_gpu: 8  # bs=8, divided by 1 GPUs
+
+network:
+  radius: 7  # total num of input frame = 2 * radius + 1
+
+train:
+  num_gpu: 1
+  exp_name: MFQE_STFF_QP37 # default: timestr. None: ~
+  random_seed: 7
+  pre-val: False  # evaluate criterion before training, e.g., ori PSNR
+  num_iter: 600000
+  interval_print:  100
+  interval_val: 10000  # save model
+  pbar_len: 100
+  load_path:
+  start_iter: 0
+
+  optim:
+    type: Adam
+    lr: !!float 1e-4  #  #  1e-4  5e-5  # init lr of scheduler
+    betas: [0.9, 0.999]
+    eps: !!float 1e-08
+
+  scheduler:
+    is_on: False
+    type: CosineAnnealingRestartLR
+    periods: [!!float 5e+4, !!float 5e+4, !!float 5e+4, !!float 5e+4, !!float 5e+4, !!float 5e+4]  # epoch interval
+    restart_weights: [1, 0.5, 0.5, 0.5, 0.5, 0.5]
+    eta_min: !!float 1e-7
+
+  loss:  # Defined in utils/deep_learning.py
+    #type: CharbonnierLoss
+    eps: !!float 1e-6
+    type: CVQE_Loss
+
+
+  criterion: # Defined in utils/deep_learning.py
+    type: PSNR
+    unit: dB
+
+
