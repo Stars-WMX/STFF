@@ -35,6 +35,7 @@ We utilize 8 NVIDIA GeForce RTX 3090 GPUs for training, please see script.sh for
 
 ## 3. Test         
 Pretrained models can be found here:
+- Google Drive: [https://drive.google.com/drive/folders/1Do7MUhSpTZuj4tHUeZroGr0bvJbPm-f0?usp=sharing](https://drive.google.com/drive/folders/1Do7MUhSpTZuj4tHUeZroGr0bvJbPm-f0?usp=sharing)
 
 We utilize 1 NVIDIA GeForce RTX 3090 GPU for testing:
 ```bash
