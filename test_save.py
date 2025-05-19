@@ -15,7 +15,7 @@ from model.STFF_L import STFF_L
 ckp_path = './exp/STFF_QP37_CVQE_Loss_7_600000.pth'
 gt_dir = './data/MFQEV2/test_18/raw'
 lq_dir = './data/MFQEV2/test_18/HM16.5_LDP/QP37'
-log_fp = open('./result/STFF-L/QP37/STFF_QP37_600000.log', 'w')
+log_fp = open('./results/STFF-L/QP37/STFF_QP37_600000.log', 'w')
 gt_video_list = sorted(glob.glob(op.join(gt_dir, '*.yuv')), key=lambda x: int(x.split('_')[-2].split('x')[0]))
 lq_video_list = sorted(glob.glob(op.join(lq_dir, '*.yuv')), key=lambda x: int(x.split('_')[-2].split('x')[0]))
 torch.cuda.set_device(3)
