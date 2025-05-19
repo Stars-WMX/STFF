@@ -24,7 +24,7 @@ lq_dir = './data/MFQEV2/test_18/HM16.5_LDP/QP37'
 ckp_paths = [
     './exp/STFF_QP37_CVQE_Loss_7_600000.pth',
 ]
-result_dir = './result/STFF-L/QP37/'
+result_dir = './results/'
 gt_video_list = sorted(glob.glob(op.join(gt_dir, '*.yuv')), key=lambda x: int(x.split('_')[-2].split('x')[0]))
 lq_video_list = sorted(glob.glob(op.join(lq_dir, '*.yuv')), key=lambda x: int(x.split('_')[-2].split('x')[0]))
 torch.cuda.set_device(3)
