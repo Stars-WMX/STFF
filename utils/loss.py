@@ -47,11 +47,11 @@ class EdgeLoss(nn.Module):
         return diff
 
     def forward(self, x, y):
-        nx, tx, cx, hx, wx = x.size()
-        ny, ty, cy, hy, wy = y.size()
-        x = x.view(nx * tx, cx, hx, wx)  #  (n * t, c, h, w)
-        y = y.view(ny * ty, cy, hy, wy)  #  (n * t, c, h, w)
-        loss = self.loss(self.laplacian_kernel(x.to('cuda')), self.laplacian_kernel(y.to('cuda')))
+        nx, tx, cx, hx, wx = x.size()  # 获取输入张量的维度
+        ny, ty, cy, hy, wy = y.size()  # 获取输入张量的维度
+        x = x.view(nx * tx, cx, hx, wx)  # 将 x 展平为 (n * t, c, h, w)
+        y = y.view(ny * ty, cy, hy, wy)  # 将 y 展平为 (n * t, c, h, w)
+        loss = self.loss(self.laplacian_kernel(x.to('cuda')), self.laplacian_kernel(y.to('cuda')))  # 计算两个张量之间的损失
         return loss
 
 class CVQE_Loss(nn.Module):
