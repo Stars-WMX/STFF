@@ -9,7 +9,7 @@ import glob
 import os.path as op
 import pandas as pd
 import time
-from model.STFF_S import STFF_S
+from model.STFF_L import STFF_L
 
 def get_resolution(filename):
     match = re.search(r'_(\d+)x(\d+)_', op.basename(filename))
@@ -18,13 +18,13 @@ def get_resolution(filename):
     else:
         return 0, 0
 
-gt_dir = '/tdx/WMX/data/MFQEV2/test_18/raw'
-lq_dir = '/tdx/WMX/data/MFQEV2/test_18/HM16.5_LDP/QP37'
+gt_dir = './data/MFQEV2/test_18/raw'
+lq_dir = './data/MFQEV2/test_18/HM16.5_LDP/QP37'
 
 ckp_paths = [
-    '/tdx/WMX/STFF/exp/MFQE_STFF_S_QP37_CVQE_Loss_7_600000/ckp_600000.pth',
+    './exp/STFF_QP37_CVQE_Loss_7_600000.pth',
 ]
-result_dir = '/tdx/WMX/STFF/result/STFF-S/QP37/'
+result_dir = './result/STFF-L/QP37/'
 gt_video_list = sorted(glob.glob(op.join(gt_dir, '*.yuv')), key=lambda x: int(x.split('_')[-2].split('x')[0]))
 lq_video_list = sorted(glob.glob(op.join(lq_dir, '*.yuv')), key=lambda x: int(x.split('_')[-2].split('x')[0]))
 torch.cuda.set_device(3)
@@ -50,8 +50,8 @@ def get_divide_block(wxh, nfs):
 
 def init_log_and_excel(weight_name):
     weight_name = weight_name.replace('ckp_', '')
-    log_path = op.join(result_dir, f"STFF_S_QP37_CVQE_Loss_7_{weight_name}_FPS.log")
-    excel_path = op.join(result_dir, f"STFF_S_QP37_CVQE_Loss_7_{weight_name}_FPS.xlsx")
+    log_path = op.join(result_dir, f"STFF_L_QP37_CVQE_Loss_7_{weight_name}_FPS.log")
+    excel_path = op.join(result_dir, f"STFF_L_QP37_CVQE_Loss_7_{weight_name}_FPS.xlsx")
     log_fp = open(log_path, 'w')
     return log_fp, excel_path
 
@@ -61,7 +61,7 @@ def save_results_to_excel(results, excel_path):
     print("Results saved to Excel file.")
 
 def process_video(ckp_path):
-    model = STFF_S()
+    model = STFF_L()
 
     msg = f'loading model {ckp_path}...'
     print(msg)
@@ -206,7 +206,6 @@ def process_video(ckp_path):
         })
     return results
 
-# 主循环
 for ckp_path in ckp_paths:
     weight_name = op.basename(ckp_path).split('.')[0]
     log_fp, excel_path = init_log_and_excel(weight_name)

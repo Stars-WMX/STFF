@@ -1,0 +1,25 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Model checkpoints
+*.pth
+*.ckpt
+*.pt
+
+# IDE
+.idea/
+.vscode/
+
+# Logs
+*.log
+
+# Environment
+venv/
+env/
+.env/
+
+# OS
+.DS_Store
+Thumbs.db 

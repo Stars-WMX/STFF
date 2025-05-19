@@ -10,12 +10,12 @@ from tqdm import tqdm
 import cv2
 import os
 import re
-from model.STFF_S import STFF_S
+from model.STFF_L import STFF_L
 
-ckp_path = '/tdx/WMX/STFF/exp/MFQE_STFF_S_QP37_CVQE_Loss_7_600000/ckp_600000.pth'
-gt_dir = '/tdx/WMX/data/MFQEV2/test_18/raw'
-lq_dir = '/tdx/WMX/data/MFQEV2/test_18/HM16.5_LDP/QP37'
-log_fp = open('/tdx/WMX/STFF/result/fangao/without_RHFR/png/STFF_QP37_600000.log', 'w')
+ckp_path = './exp/STFF_QP37_CVQE_Loss_7_600000.pth'
+gt_dir = './data/MFQEV2/test_18/raw'
+lq_dir = './data/MFQEV2/test_18/HM16.5_LDP/QP37'
+log_fp = open('./result/STFF-L/QP37/STFF_QP37_600000.log', 'w')
 gt_video_list = sorted(glob.glob(op.join(gt_dir, '*.yuv')), key=lambda x: int(x.split('_')[-2].split('x')[0]))
 lq_video_list = sorted(glob.glob(op.join(lq_dir, '*.yuv')), key=lambda x: int(x.split('_')[-2].split('x')[0]))
 torch.cuda.set_device(3)
@@ -47,7 +47,7 @@ def get_divide_block(wxh, nfs):
     return divide_block_list[0]  # Returns the first value in the list as the default
 
 def main():
-    model = STFF_S()
+    model = STFF_L()
     msg = f'loading model {ckp_path}...'
     print(msg)
     checkpoint = torch.load(ckp_path, map_location='cpu')
@@ -190,7 +190,7 @@ def main():
             u_frame = lq_u[idx]
             v_frame = lq_v[idx]
 
-            directory = f'/tdx/WMX/STFF/result/fangao/STFF/QP37/{vname}'
+            directory = f'./result/STFF-L/QP37/{vname}'
             if not os.path.exists(directory):
                 os.makedirs(directory)
             filename = f'{directory}/f{idx+1:03}.png'
